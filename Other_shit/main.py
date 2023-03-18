@@ -34,7 +34,7 @@ running = True
 clock = pg.time.Clock()
 
 
-win2 = Window("2nd window", resizable =True,size=(256, 256))
+win2 = Window()
 
 
 

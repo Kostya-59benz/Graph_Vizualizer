@@ -3,14 +3,15 @@ import os
 
 
 
-
 from interface import ObjectsGroup
 from object import Button, Circle, Edge, buttons
 from helper_finction import make_rows, grid
 from pygame._sdl2 import Window, Renderer
 
 
-    
+
+
+
 SIZE = WIDTH,  HEIGHT = 800, 640
 FPS = 120
 
@@ -26,21 +27,26 @@ def main():
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
     
-    btn = Button(550, 30, W_BUTTON, H_BUTTON,"Видалити дугу")
+    btn = Button(550, 30, W_BUTTON, H_BUTTON,"Видалити вершину зі збереженням зв'зку")
     btn_1 = Button(350, 30, W_BUTTON, H_BUTTON,"Матриця суміжності")
     btn_2 = Button(150, 30, W_BUTTON, H_BUTTON,"Очистити вікно")
 
 
     objects_group = ObjectsGroup()
     
-    win = Window("Table", resizable =True, size=(500, 500))
+    win = Window()
    
     global ctn_vertex
 
     helper = []
     score = 0
     flag = False
-    
+    delete = False
+    changed_vertex = None
+
+
+
+
     vertex_t = []
     edge_t = []
 
@@ -72,12 +78,26 @@ def main():
                                 helper.clear()
                 elif event.button == 4:
                     for e in objects_group.check_colission(x, y):
-                        result = objects_group.error(e)
-                        print(result)
-                        if result:
-                            objects_group.remove(e)
-                        else:
-                            continue
+                        if delete:
+
+                            for pair in objects_group.get_pairs():
+                                
+                                pair = list(pair)
+                                print(pair[0].score, pair[1].score)
+                               
+                                
+                                for el in pair:
+                                    if el == e:
+                                        objects_group.remove_pair(tuple(pair))
+                                        objects_group.chose_edge_and_remove(pair[0].position,pair[1].position)
+                                        pair.remove(e)
+                                        objects_group.remove(e)
+                                        helper.append(changed_vertex.position)
+                                        helper.append(pair[0].position)
+                                        objects_group.add_edge(Edge(screen,changed_vertex.position, pair[0].position),helper)
+                                        delete = False
+                                        helper.clear()
+                                    
                 for button in buttons:
                     if button.process(screen) == True:
                         flag = True
@@ -93,6 +113,19 @@ def main():
                     renderer = Renderer(win)
                     grid(renderer,*make_rows(vertex_t,edge_t,None,None),400,objects_group)
 
+                if flag and not btn.check_collision(x,y):
+                    while True:
+                        vertex_num = input("Зміна вершини\n")
+                        if int(vertex_num) > score:
+                            print('Вершины с таким номером еще нету на поле. Пожалуйста проверте свой выбор и введите правильне число!')
+                        else: 
+                            changed_vertex = objects_group.change_direction(int(vertex_num))
+                            delete = True
+                            dd = objects_group.get_pairs()
+                            print(dd)
+                            break
+
+                #FIX THIS FUNC
                 if flag and not btn_2.check_collision(x,y):
                     objects_group.clear()
                     score = 0
