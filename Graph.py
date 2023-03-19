@@ -138,7 +138,7 @@ class Edge(Drawable):
 
 
 
-
+# INTERFACE 
 class ObjectsGroup:
     def __init__(self):
         self._objects: list[Union[Drawable, HasColissions]] = []
@@ -209,8 +209,25 @@ class ObjectsGroup:
                 result.append(e)
         return result
 
+ 
+    def error(self,vertex):
+        for pair in self.pairs:
+            if vertex in pair:
+                answer = messagebox(
+                        "Вы не можете видалити вершину",
+                        "спочатку видаліть дугу між вершинами!",
+                        info=True,
+                        buttons=("Yes", "No"),
+                        return_button=0,
+                        escape_button=1,
+                    )
+                return False
+            else: return True
+            
+            
 
 
+# additional functions 
 def make_rows(vertex_t, edge_t, vertex, edge):
 
     global ctn_edge, ctn_vertex
@@ -231,7 +248,6 @@ def grid(renderer=None,cnt_vertex=0,cnt_edge=0,size=500,object_pair = None):
     x = 0
     y = 0
     ctn = 0
-    print(rows)
     ones = object_pair.get_pairs()
     
     for el in ones:
@@ -293,14 +309,15 @@ def grid(renderer=None,cnt_vertex=0,cnt_edge=0,size=500,object_pair = None):
         print('---------------')
         renderer.present()
 
-    
+
+#Entry point
 def main():
     
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
     
-    btn = Button(550, 30, W_BUTTON, H_BUTTON,"Роз'єднати вершини")
-    btn_1 = Button(350, 30, W_BUTTON, H_BUTTON,"Створити таблицю")
+    btn = Button(550, 30, W_BUTTON, H_BUTTON,"Видалити дугу")
+    btn_1 = Button(350, 30, W_BUTTON, H_BUTTON,"Матриця суміжності")
     btn_2 = Button(150, 30, W_BUTTON, H_BUTTON,"Очистити вікно")
 
 
@@ -345,7 +362,12 @@ def main():
                                 helper.clear()
                 elif event.button == 4:
                     for e in objects_group.check_colission(x, y):
-                       objects_group.remove(e)
+                        result = objects_group.error(e)
+                        print(result)
+                        if result:
+                            objects_group.remove(e)
+                        else:
+                            continue
                 for button in buttons:
                     if button.process(screen) == True:
                         flag = True
