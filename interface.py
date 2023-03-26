@@ -20,7 +20,12 @@ class ObjectsGroup:
         self._make_pairs(*helper)
 
     def remove(self, element: Union[Drawable, HasColissions]):
-        self._objects.remove(element)
+        try:
+            self._objects.remove(element)
+            
+        except ValueError as e:
+            pass
+
 
     def remove_edge(self,element: Union[Drawable, HasColissions]):
         self._objects_edges.remove(element)
@@ -73,12 +78,11 @@ class ObjectsGroup:
     def get_pairs(self):
         return self.pairs
 
-
     def remove_pair(self, pair):
         for saved_pair in self.pairs:
             
             if saved_pair == pair:
-                print(saved_pair,pair)
+                #print(saved_pair,pair)
                 self.pairs.remove(pair)
     
 

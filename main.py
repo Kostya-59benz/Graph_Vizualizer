@@ -79,25 +79,29 @@ def main():
                 elif event.button == 4:
                     for e in objects_group.check_colission(x, y):
                         if delete:
+                            for _ in range(6): 
+                                
+                                list_pairs = objects_group.get_pairs()
 
-                            for pair in objects_group.get_pairs():
-                                
-                                pair = list(pair)
-                                print(pair[0].score, pair[1].score)
-                               
-                                
-                                for el in pair:
-                                    if el == e:
-                                        objects_group.remove_pair(tuple(pair))
-                                        objects_group.chose_edge_and_remove(pair[0].position,pair[1].position)
-                                        pair.remove(e)
-                                        objects_group.remove(e)
-                                        helper.append(changed_vertex.position)
-                                        helper.append(pair[0].position)
-                                        objects_group.add_edge(Edge(screen,changed_vertex.position, pair[0].position),helper)
-                                        delete = False
-                                        helper.clear()
+
+                                for pair in list_pairs:
+
+                                    pair = list(pair)
+                                    for el in pair:
+                                        if el == e:
+                                            objects_group.remove_pair(tuple(pair))
+                                            objects_group.chose_edge_and_remove(pair[0].position,pair[1].position)
+                                            pair.remove(e)
+                                            objects_group.remove(e)
+                                            helper.append(changed_vertex.position)
+                                            helper.append(pair[0].position)
+                                            pair.append(changed_vertex)
+                                            objects_group.add_edge(Edge(screen,changed_vertex.position, pair[0].position),helper)
+                                            delete = False
+                                            helper.clear()
                                     
+                                                                    
+                                #print(pair[0].score, pair[1].score)
                 for button in buttons:
                     if button.process(screen) == True:
                         flag = True
@@ -114,6 +118,8 @@ def main():
                     grid(renderer,*make_rows(vertex_t,edge_t,None,None),400,objects_group)
 
                 if flag and not btn.check_collision(x,y):
+                    
+
                     while True:
                         vertex_num = input("Зміна вершини\n")
                         if int(vertex_num) > score:
@@ -121,9 +127,8 @@ def main():
                         else: 
                             changed_vertex = objects_group.change_direction(int(vertex_num))
                             delete = True
-                            dd = objects_group.get_pairs()
-                            print(dd)
                             break
+
 
                 #FIX THIS FUNC
                 if flag and not btn_2.check_collision(x,y):
