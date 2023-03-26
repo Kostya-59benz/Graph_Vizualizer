@@ -27,7 +27,8 @@ def main():
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
     
-    btn = Button(550, 30, W_BUTTON, H_BUTTON,"Видалити вершину зі збереженням зв'зку")
+    btn = Button(550, 30, W_BUTTON + 100, H_BUTTON,"Видалити вершину зі збереженням зв'зку")
+    btn_tested = Button(550, 100, W_BUTTON + 100, H_BUTTON,"Видалити вершину без збереження зв'зку")
     btn_1 = Button(350, 30, W_BUTTON, H_BUTTON,"Матриця суміжності")
     btn_2 = Button(150, 30, W_BUTTON, H_BUTTON,"Очистити вікно")
 
@@ -118,8 +119,6 @@ def main():
                     grid(renderer,*make_rows(vertex_t,edge_t,None,None),400,objects_group)
 
                 if flag and not btn.check_collision(x,y):
-                    
-
                     while True:
                         vertex_num = input("Зміна вершини\n")
                         if int(vertex_num) > score:
@@ -128,6 +127,10 @@ def main():
                             changed_vertex = objects_group.change_direction(int(vertex_num))
                             delete = True
                             break
+
+                if flag and not btn_tested.check_collision(x,y):
+                    while True:
+                        ...
 
 
                 #FIX THIS FUNC

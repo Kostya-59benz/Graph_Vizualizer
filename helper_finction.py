@@ -90,9 +90,5 @@ def grid(renderer=None,cnt_vertex=0,cnt_edge=0,size=500,object_pair = None):
             ctn +=1
             
             step = distance_btw_rows + step
-
-        
-
-            
         print('---------------')
         renderer.present()
