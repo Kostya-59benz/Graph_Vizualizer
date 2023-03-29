@@ -123,6 +123,9 @@ class Button(HasColissions):
         return self.alreadyPressed
 
     def check_collision(self, x: int, y: int):
-        if self.buttonRect[0] <= x and x <= self.buttonRect[0] + self.width and self.buttonRect[1] <= y and y <= self.buttonRect[1] + self.height:
+        return not self.buttonRect.collidepoint(x,y)
+    
+
+        """ if self.buttonRect[0] <= x and x <= self.buttonRect[0] + self.width and self.buttonRect[1] <= y and y <= self.buttonRect[1] + self.height:
             return False
-        else: return True
+        else: return True """
