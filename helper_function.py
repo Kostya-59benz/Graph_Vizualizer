@@ -11,8 +11,6 @@ ctn_edge = ctn_vertex = 0
 
 
 
-
-# TODO: REWORK FUNCION TO RENEW TABLE
 def make_rows(vertex_t, edge_t, vertex, edge):
 
     global ctn_vertex, ctn_edge
@@ -28,9 +26,14 @@ def make_rows(vertex_t, edge_t, vertex, edge):
     return ctn_vertex,ctn_edge
 
 
+def redraw_table():
+    global ctn_vertex
+    ctn_vertex = 0
 
 # draw table
-def grid(renderer=None,cnt_vertex=0,cnt_edge=0,size=500,object_pair = None):   
+def grid(renderer=None,cnt_vertex=0,cnt_edge=0,size=500,object_pair = None):
+
+
     rows = cnt_vertex
     
     x = 0

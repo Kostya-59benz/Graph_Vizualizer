@@ -58,9 +58,6 @@ class ObjectsGroup:
         for el in self._objects:
             if el.score == val:
                 return el                
-                
-        
-
 
     
     def _make_pairs(self,vertex1: tuple ,vertex2: tuple):
@@ -77,12 +74,14 @@ class ObjectsGroup:
 
     def get_pairs(self):
         return self.pairs
-
+    
+    def len_pairs(self):
+        return len(self.pairs)
+    
     def remove_pair(self, pair):
         for saved_pair in self.pairs:
             
             if saved_pair == pair:
-                #print(saved_pair,pair)
                 self.pairs.remove(pair)
     
 

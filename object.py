@@ -50,9 +50,9 @@ class Circle(Drawable, HasColissions):
         pygame.draw.circle(self.screen, (0, 0, 255),
                            self.position, self.radius)
         
-        self.draw_text(self.screen,self._score,18)
+        self._draw_text(self.screen,self._score,18)
 
-    def draw_text(self,surf, score, size):
+    def _draw_text(self,surf, score, size):
         font = pygame.font.Font(FONT_NAME, size)
         text_surface = font.render(str(score), True, (255,255,255))
         if score <=9:
@@ -91,7 +91,7 @@ class Button(HasColissions):
         self.alreadyPressed = False
 
         self.fillColors = {
-            'normal': '#555555',
+            'normal': '#808080',
             'hover': '#666666',
             'pressed': '#333333',
         }

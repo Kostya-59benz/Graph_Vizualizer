@@ -1,15 +1,10 @@
 import pygame 
-import os
-
+from pygame._sdl2 import Window, Renderer
 
 
 from interface import ObjectsGroup
 from object import Button, Circle, Edge, buttons
-from helper_finction import make_rows, grid
-from pygame._sdl2 import Window, Renderer
-
-
-
+from helper_function import make_rows, grid, redraw_table
 
 
 SIZE = WIDTH,  HEIGHT = 800, 640
@@ -28,25 +23,20 @@ def main():
     clock = pygame.time.Clock()
     
     btn = Button(550, 30, W_BUTTON + 100, H_BUTTON,"Видалити вершину зі збереженням зв'зку")
-    btn_tested = Button(550, 100, W_BUTTON + 100, H_BUTTON,"Видалити вершину без збереження зв'зку")
     btn_1 = Button(350, 30, W_BUTTON, H_BUTTON,"Матриця суміжності")
     btn_2 = Button(150, 30, W_BUTTON, H_BUTTON,"Очистити вікно")
 
 
     objects_group = ObjectsGroup()
     
-    win = Window()
-   
-    global ctn_vertex
+
+    win = 0 
 
     helper = []
     score = 0
     flag = False
     delete = False
     changed_vertex = None
-
-
-
 
     vertex_t = []
     edge_t = []
@@ -79,30 +69,27 @@ def main():
                                 helper.clear()
                 elif event.button == 4:
                     for e in objects_group.check_colission(x, y):
-                        if delete:
-                            for _ in range(6): 
+                        for _ in range(objects_group.len_pairs()): 
                                 
-                                list_pairs = objects_group.get_pairs()
-
-
-                                for pair in list_pairs:
-
-                                    pair = list(pair)
-                                    for el in pair:
-                                        if el == e:
-                                            objects_group.remove_pair(tuple(pair))
-                                            objects_group.chose_edge_and_remove(pair[0].position,pair[1].position)
-                                            pair.remove(e)
-                                            objects_group.remove(e)
+                            list_pairs = objects_group.get_pairs()
+                            
+                            for pair in list_pairs:
+                                print(pair[0].score, pair[1].score)
+                                pair = list(pair)
+                                for el in pair:
+                                    if el == e:
+                                        objects_group.remove_pair(tuple(pair))
+                                        objects_group.chose_edge_and_remove(pair[0].position,pair[1].position)
+                                        pair.remove(e)
+                                        objects_group.remove(e)    
+                                        if delete:
                                             helper.append(changed_vertex.position)
                                             helper.append(pair[0].position)
                                             pair.append(changed_vertex)
                                             objects_group.add_edge(Edge(screen,changed_vertex.position, pair[0].position),helper)
-                                            delete = False
                                             helper.clear()
-                                    
-                                                                    
-                                #print(pair[0].score, pair[1].score)
+                        delete = False
+
                 for button in buttons:
                     if button.process(screen) == True:
                         flag = True
@@ -128,17 +115,11 @@ def main():
                             delete = True
                             break
 
-                if flag and not btn_tested.check_collision(x,y):
-                    while True:
-                        ...
-
-
-                #FIX THIS FUNC
                 if flag and not btn_2.check_collision(x,y):
                     objects_group.clear()
                     score = 0
-                    ctn_vertex = 0
-                    
+                    redraw_table()
+
         for button in buttons:
             button.process(screen)
             
